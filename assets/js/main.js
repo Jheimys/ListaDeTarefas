@@ -1,8 +1,13 @@
 
 const Main = {
+
+    tasks: [],
+
     init: function() {
         this.cacheSelectors() 
-        this.bindEvents()       
+        this.bindEvents()
+        this.getStorage()
+        this.buildTaks()
     },
 
     cacheSelectors: function() {
@@ -24,6 +29,33 @@ const Main = {
         this.$removeButtons.forEach(function(button) {
             button.onclick = self.Events.removeButtons_click
         })
+    },
+
+    getStorage: function() {
+        const tasks = localStorage.getItem('tasks')
+
+        //1° task é o array o 2° task é a constante
+        this.tasks = JSON.parse(tasks)
+    },
+
+    buildTaks: function() {
+        let html = ''
+
+        this.tasks.forEach(item => {
+            html += `
+                <li>          
+                    <div class="check"></div>
+                    <label class="task">
+                        ${item.task}
+                    </label>
+                    <button class="remove"></button>
+                </li>
+            `
+        })
+
+        this.$list.innerHTML = html
+        this.cacheSelectors() 
+        this.bindEvents()
     },
 
     Events: {
@@ -55,6 +87,16 @@ const Main = {
                 e.target.value = ''
                 this.cacheSelectors()
                 this.bindEvents()
+
+                const savedTasks = localStorage.getItem('tasks')
+                const savedTasksObj = JSON.parse(savedTasks)
+
+                const obj = [
+                    {task: value},
+                    ...savedTasksObj
+                ]
+
+                localStorage.setItem('tasks', JSON.stringify(obj))
             }
         },
 
