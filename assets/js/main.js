@@ -27,7 +27,7 @@ const Main = {
         this.$inputTask.onkeypress = self.Events.inputTask_keypress.bind(this)
         
         this.$removeButtons.forEach(function(button) {
-            button.onclick = self.Events.removeButtons_click
+            button.onclick = self.Events.removeButtons_click.bind(self)
         })
     },
 
@@ -38,19 +38,24 @@ const Main = {
         this.tasks = JSON.parse(tasks)
     },
 
+    getTaskHml: function(task) {
+        return `
+            <li>          
+                <div class="check"></div>
+                <label class="task">
+                        ${task}
+                    </label>
+                    <button class="remove" data-task="${task}"></button>
+            </li>
+        `
+    },
+
     buildTaks: function() {
         let html = ''
 
         this.tasks.forEach(item => {
-            html += `
-                <li>          
-                    <div class="check"></div>
-                    <label class="task">
-                        ${item.task}
-                    </label>
-                    <button class="remove"></button>
-                </li>
-            `
+            html += this.getTaskHml(item.task)
+            
         })
 
         this.$list.innerHTML = html
@@ -75,15 +80,7 @@ const Main = {
             const value = e.target.value
 
             if(key == 'Enter'){
-                this.$list.innerHTML += `
-                    <li>          
-                        <div class="check"></div>
-                        <label class="task">
-                          ${value}
-                        </label>
-                        <button class="remove"></button>
-                    </li>
-                    `
+                this.$list.innerHTML += this.getTaskHml(value)
                 e.target.value = ''
                 this.cacheSelectors()
                 this.bindEvents()
@@ -102,6 +99,11 @@ const Main = {
 
         removeButtons_click: function(e) {
             let li = e.target.parentElement
+            const value = e.target.dataset['task']
+            
+            const newTasksState = this.tasks.filter(item => item.task != value)
+
+            localStorage.setItem('tasks', JSON.stringify(newTasksState))
             
             li.classList.add('removed')
 
