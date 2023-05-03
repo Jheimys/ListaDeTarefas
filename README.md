@@ -11,7 +11,13 @@ Estou sempre buscando melhorar meu código,Ficarei feliz com seu feedback.
 james_bassani@yahoo.com
 
 # O Projeto
- 
+O projeto Lista De Tarefas possibilita ao usuário uma boa organização de suas tarefas diarias ou até mesmo semanal. Nele podemos adicionar tarefas, marcar com feita ou
+se preferir excluir a tarefa. 
+
+Para a construção dessa página foi usado JavaScript, HTML e CSS. No desenvolvimento de projeto busquei aprimorar meus conhecimentos sobre armazenamento local ou seja a 
+persistência dos dados na web com localStorage assim Sempre que o usuário entrar no site, as tarefas não serão perdidas, a menos que limpe o armazenamento local.
+
+
  
   
   <p align=center>
